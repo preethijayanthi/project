@@ -17,6 +17,7 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns
 	<servlet-mapping>
 		<servlet-name>dispatcher</servlet-name>
 		<url-pattern>/</url-pattern>
+		<url-pattern>*.obj</url-pattern>
 	</servlet-mapping>
  
 	<context-param>
@@ -38,5 +39,6 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns
 	<filter-mapping>
 		<filter-name>springSecurityFilterChain</filter-name>
 		<url-pattern>/*</url-pattern>
+		<url-pattern>*.obj</url-pattern>
 	</filter-mapping>
 </web-app>

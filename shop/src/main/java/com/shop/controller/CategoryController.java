@@ -13,10 +13,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.shop.model.entity.Category;
+import com.shop.model.entity.Register;
 import com.shop.model.service.CategoryService;
 @Controller
 public class CategoryController {
-	@Autowired(required = true)
+	@Autowired
 	CategoryService categoryService;
 	@ModelAttribute("category")
 	public Category bind()
@@ -57,7 +58,7 @@ public class CategoryController {
 		}
 		
 		map.put("categoryList", categoryService.getAllCategory());
-		return "categorylist";
+		return "index";
 		
 	}
 }

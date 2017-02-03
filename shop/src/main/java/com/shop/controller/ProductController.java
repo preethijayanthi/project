@@ -41,6 +41,21 @@ public class ProductController {
 		map.put("categoryList", categoryService.getAllCategory());
 		return "product";
 	}
+	@RequestMapping(value="/edit")
+	public String edit(Map<String, Object> map,@RequestParam("edit") int id)
+	{
+		Product product=productService.getProduct(id);
+		map.put("product",product);
+		map.put("productList", productService.getAllProduct());
+		map.put("categoryList", categoryService.getAllCategory());
+		return"product";
+	}
+	@RequestMapping(value="/delete")
+	public String edit(@RequestParam("edit") int id)
+	{
+		productService.delete(id);
+		return "viewall";
+	}
 	
 	@RequestMapping(value="/product.do", method=RequestMethod.POST)
 	public String doproActions(@ModelAttribute Product product, BindingResult result,
@@ -50,9 +65,39 @@ public class ProductController {
 		switch(action.toLowerCase()){	
 		case "add":
 			productService.add(product);
+			if (!file.isEmpty()) {
+				try {
+					byte[] bytes = file.getBytes();
+
+					// Creating the directory to store file
+					String rootPath = servletContext.getRealPath("/");
+					File dir = new File(rootPath + File.separator + "resources/images");
+					if (!dir.exists())
+						dir.mkdirs();
+
+					// Create the file on server
+					File serverFile = new File(dir + File.separator + product.getName() + ".jpg");
+
+					BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(serverFile));
+					stream.write(bytes);
+					stream.close();
+
+					System.out.println(serverFile);
+
+					
+					map.put("product", productResult);
+					map.put("productList", productService.getAllProduct());
+					m.addAttribute("message", "You successfully uploaded file");
+					map.put("img",product.getName());
+					return /*"product"*/"productpage";
+
+				} catch (Exception e) {
+					return "You failed to upload " + product.getName() + " => " + e.getMessage();
+				}
+			} 
 			productResult = product;
 			break;
-		case "edit":
+		case "update":
 			productService.edit(product);
 			productResult = product;
 			break;
@@ -65,41 +110,15 @@ public class ProductController {
 			productResult = searchedProduct!=null ? searchedProduct : new Product();
 			break;
 		}
-		if (!file.isEmpty()) {
-			try {
-				byte[] bytes = file.getBytes();
-
-				// Creating the directory to store file
-				String rootPath = servletContext.getRealPath("/");
-				File dir = new File(rootPath + File.separator + "resources/images");
-				if (!dir.exists())
-					dir.mkdirs();
-
-				// Create the file on server
-				File serverFile = new File(dir + File.separator + product.getName() + ".jpg");
-
-				BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(serverFile));
-				stream.write(bytes);
-				stream.close();
-
-				System.out.println(serverFile);
-
-				
-				map.put("product", productResult);
-				map.put("productList", productService.getAllProduct());
-				m.addAttribute("message", "You successfully uploaded file");
-				map.put("img",product.getName());
-				return /*"product"*/"productpage";
-
-			} catch (Exception e) {
-				return "You failed to upload " + product.getName() + " => " + e.getMessage();
-			}
-		} else {
-			return "You failed to upload " + product.getName() + " because the file was empty.";
-		}
-
+		
+		map.put("product", productResult);
+		map.put("productList", productService.getAllProduct());
+		return "productpage";
+	
 		/*map.put("product", productResult);*/
 		/*map.put("productList", productService.getAllProduct());*/
 		/*return "product";*/
+	
 	}
+
 }

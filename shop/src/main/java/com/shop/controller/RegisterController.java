@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.shop.model.dao.RegisterDao;
 import com.shop.model.entity.Register;
+import com.shop.model.entity.Role;
 import com.shop.model.service.CategoryService;
 import com.shop.model.service.RegisterService;
 
@@ -26,6 +28,8 @@ import com.shop.model.service.RegisterService;
 public class RegisterController {
 	@Autowired
 	RegisterService registerService;
+//	@Autowired
+//	RegisterDao registerdao;
 	@Autowired
 	CategoryService categoryService;
 	 @ModelAttribute("register")
@@ -41,7 +45,11 @@ public class RegisterController {
 		map.put("registerList", registerService.getAllRegister());
 		return "register";
 	}
-
+@RequestMapping("/success")
+public String add()
+{
+	return"success";
+}
 	@RequestMapping(value="/register.do", method=RequestMethod.POST)
 	public String doregActions(@Valid @ModelAttribute(value="register") Register register, BindingResult result,@RequestParam String action, Map<String, Object> map){
 		/*Register registerResult = new Register();*/
@@ -52,7 +60,15 @@ public class RegisterController {
 		System.out.println("Rathiga");
 		switch(action.toLowerCase()){	
 		case "register":
+			Role role=new Role();
+			role.setUserrole("ROLE_USER");
+			role.setId_fk(register);
+			register.setEnable(true);
 			registerService.add(register);
+			registerService.addrole(role);
+			
+			
+			
 			System.out.println("in");
 			/*registerResult = register;*/
 			break;
@@ -68,7 +84,7 @@ public class RegisterController {
 			registerService.delete(register);
 			break;
 		case "retrieve":
-			Register searchedRegister = registerService.getRegister(register.getId());
+			Register searchedRegister = registerService.getRegister(register.getUserid());
 			register = searchedRegister!=null ? searchedRegister : new Register();
 			break;
 			/*map.put("searchList", register);
@@ -78,7 +94,7 @@ public class RegisterController {
 	/*map.put("register", register);*/
 		
 		map.put("registerList", registerService.getAllRegister());
-		return "redirect:list";
+		return "success";
 		
 	}
 	/*@RequestMapping("/search")

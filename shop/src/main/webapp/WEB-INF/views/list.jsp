@@ -35,7 +35,7 @@
       style="background-color: white; color: black; text-align: center;"
       height="30px">
       
-      <td><c:out value="${user.id}" />
+      
       </td>
       <td><c:out value="${user.firstname}" />
       </td>

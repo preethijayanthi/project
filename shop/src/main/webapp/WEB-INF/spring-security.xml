@@ -10,23 +10,31 @@
     	
 		<intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')" /> 
 		<intercept-url pattern="/user/**" access="hasRole('ROLE_USER')" />
-		<intercept-url pattern="/samsung/**" access="hasRole('ROLE_USER')" />
-		<form-login login-page='/login' username-parameter="username"
-		password-parameter="password" default-target-url="/samsung"
+		<!--  <intercept-url pattern="/login" access="hasRole('ROLE_USER')" /> -->
+		<!-- <intercept-url pattern="/samsung/**" access="hasRole('ROLE_USER')" /> -->
+		<form-login login-page='/login' username-parameter="Username"
+		password-parameter="Password" default-target-url="/index"
 		authentication-failure-url="/login?authfailed" />
-		<logout logout-success-url="/login?logout" />
+		<logout logout-success-url="/index?logout" />
 		<csrf disabled="true" />
 			
 	
 	</http>
        
-    <authentication-manager>
+   <!--  <authentication-manager>
       <authentication-provider>
         <user-service>
           <user name="admin" password="456" authorities="ROLE_ADMIN,ROLE_USER" />
           <user name="user" password="123" authorities="ROLE_USER" />
         </user-service>
       </authentication-provider>
-    </authentication-manager>   
+    </authentication-manager> -->  
+    <authentication-manager>
+		<authentication-provider>
+			<jdbc-user-service data-source-ref="dataSource"
+				users-by-username-query="select username,password,enable from Register where username=?"
+				authorities-by-username-query="select u1.username, u2.userrole from Register u1,Role u2 where u1.userid = u2.userid and u1.username =?" />
+		</authentication-provider>
+	</authentication-manager> 
            
 </beans:beans>

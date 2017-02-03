@@ -6,33 +6,56 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.springframework.web.multipart.MultipartFile;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Product  {
 @Id
 @GeneratedValue(strategy=GenerationType.AUTO)
 private int id;
+@NotNull(message="Enter the valid name")
 private String Productname;
-private String Productprice;
+@NotNull(message="Enter the valid price")
+/*@Size(min=1,message="price is invalid")*/
+private int Productprice;
 private String Productdescription;
 private String Categoryname;
 private String Name;
+private String quantity;
+/*@ManyToOne
+@JsonIgnore
+@JoinColumn(name="cartitemid")
+private Cartitems items;*/
 
+
+/*public Cartitems getItems() {
+	return items;
+}
+
+public void setItems(Cartitems items) {
+	this.items = items;
+}*/
 
 public Product()
 {
 }
-public Product(int id,String Productname,String Productprice,String Productdescription,String Categoryname,String name){
-	this.id=id;
-	this.Productname=Productname;
-	this.Productprice=Productprice;
-	this.Productdescription=Productdescription;
-	this.Categoryname=Categoryname;
-	this.Name=Name;
+
+public String getQuantity() {
+	return quantity;
 }
+
+public void setQuantity(String quantity) {
+	this.quantity = quantity;
+}
+
 public String getName() {
 	return Name;
 }
@@ -65,12 +88,15 @@ public String getProductname() {
 public void setProductname(String productname) {
 	Productname = productname;
 }
-public String getProductprice() {
+
+public int getProductprice() {
 	return Productprice;
 }
-public void setProductprice(String productprice) {
+
+public void setProductprice(int productprice) {
 	Productprice = productprice;
 }
+
 public String getProductdescription() {
 	return Productdescription;
 }

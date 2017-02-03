@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.shop.model.dao.RegisterDao;
 import com.shop.model.entity.Register;
+import com.shop.model.entity.Role;
 
 @Service
 public class RegisterServiceImpl implements RegisterService{
@@ -38,6 +39,12 @@ public class RegisterServiceImpl implements RegisterService{
 	@Transactional
 	public List getAllRegister() {
 		return registerDao.getAllRegister();
+	}
+	@Transactional
+	public void addrole(Role role) {
+		// TODO Auto-generated method stub
+		registerDao.addrole(role);
+		
 	}
 
 }

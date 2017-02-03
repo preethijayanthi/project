@@ -21,7 +21,7 @@ public class ProductDaoImpl implements ProductDao {
 	public void add(Product product) {
 		session.getCurrentSession().save(product);
 	}
-
+	@Override
 	public void edit(Product product) {
 		session.getCurrentSession().update(product);
 	}
@@ -37,7 +37,9 @@ public class ProductDaoImpl implements ProductDao {
 	}
 
 	@Override
-	public List getAllProduct() {
+	@SuppressWarnings("unchecked")
+	public List<Product> getAllProduct() {
+		
 		return session.getCurrentSession().createQuery("from Product").list();
 	}
 	/*@Override

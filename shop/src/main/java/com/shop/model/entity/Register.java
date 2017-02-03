@@ -4,6 +4,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -16,66 +18,40 @@ public class Register {
 @Id
 @GeneratedValue(strategy=GenerationType.AUTO)
 
-private int id;
-//@Size(min=3,max=10,message="hello")
-private String firstname;
-private String lastname;
+private int userid;
 @NotEmpty(message="Enter the mail id")
 @Email
-private String mailid; 
-//@NotNull(message="happy")
-//@Min(18)
-private String mobile;
+private String email; 
+private String phonenumber;
 private String username;
 private String password;
 private String repassword;
-private String address;
+private Boolean enable;
+@OneToOne
+@JoinColumn(name="cartid")
+private Cart cart;
+
+public Cart getCart() {
+	return cart;
+}
+
+public void setCart(Cart cart) {
+	this.cart = cart;
+}
+
 public Register()
 {
 }
-public Register(int id,String firstname,String lastname,String mailid,String mobile,String username,String password,String repassword,String address){
-	this.id=id;
-	this.firstname=firstname;
-	this.lastname=lastname;
-	
-	this.mailid=mailid;
-	this.mobile=mobile;
-	this.username=username;
-	this.password=password;
-	this.repassword=repassword;
-	this.address=address;
-	
+
+
+public Boolean getEnable() {
+	return enable;
 }
-public int getId() {
-	return id;
+public void setEnable(Boolean enable) {
+	this.enable = enable;
 }
-public void setId(int id) {
-	this.id = id;
-}
-public String getFirstname() {
-	return firstname;
-}
-public void setFirstname(String firstname) {
-	this.firstname = firstname;
-}
-public String getLastname() {
-	return lastname;
-}
-public void setLastname(String lastname) {
-	this.lastname = lastname;
-}
-public String getMailid() {
-	return mailid;
-}
-public void setMailid(String mailid) {
-	this.mailid = mailid;
-}
-public String getMobile() {
-	return mobile;
-}
-public void setMobile(String mobile) {
-	this.mobile = mobile;
-}
+
+
 public String getUsername() {
 	return username;
 }
@@ -94,10 +70,29 @@ public String getRepassword() {
 public void setRepassword(String repassword) {
 	this.repassword = repassword;
 }
-public String getAddress() {
-	return address;
+
+public String getEmail() {
+	return email;
 }
-public void setAddress(String address) {
-	this.address = address;
+
+public void setEmail(String email) {
+	this.email = email;
 }
+
+public String getPhonenumber() {
+	return phonenumber;
+}
+
+public void setPhonenumber(String phonenumber) {
+	this.phonenumber = phonenumber;
+}
+
+public int getUserid() {
+	return userid;
+}
+
+public void setUserid(int userid) {
+	this.userid = userid;
+}
+
 }
